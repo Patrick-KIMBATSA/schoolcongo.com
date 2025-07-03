@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portail Documentaire - École</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#3b82f6',secondary:'#64748b'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Poppins', sans-serif;
+}
+.filiere-c {
+border-color: #3b82f6;
+}
+.filiere-d {
+border-color: #10b981;
+}
+.filiere-e {
+border-color: #f59e0b;
+}
+.filiere-c .filiere-icon {
+background-color: rgba(59, 130, 246, 0.1);
+color: #3b82f6;
+}
+.filiere-d .filiere-icon {
+background-color: rgba(16, 185, 129, 0.1);
+color: #10b981;
+}
+.filiere-e .filiere-icon {
+background-color: rgba(245, 158, 11, 0.1);
+color: #f59e0b;
+}
+.matiere-card:hover {
+transform: translateY(-3px);
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.custom-checkbox {
+display: flex;
+align-items: center;
+cursor: pointer;
+}
+.custom-checkbox input {
+position: absolute;
+opacity: 0;
+cursor: pointer;
+}
+.checkmark {
+height: 20px;
+width: 20px;
+background-color: #fff;
+border: 2px solid #e5e7eb;
+border-radius: 4px;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+.custom-checkbox input:checked ~ .checkmark {
+background-color: #3b82f6;
+border-color: #3b82f6;
+}
+.checkmark:after {
+content: "";
+display: none;
+}
+.custom-checkbox input:checked ~ .checkmark:after {
+display: block;
+width: 5px;
+height: 10px;
+border: solid white;
+border-width: 0 2px 2px 0;
+transform: rotate(45deg);
+}
+.modal {
+display: none;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.5);
+z-index: 1000;
+}
+.modal-content {
+background-color: white;
+margin: 5% auto;
+width: 80%;
+max-width: 900px;
+border-radius: 8px;
+box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+max-height: 80vh;
+display: flex;
+flex-direction: column;
+}
+.document-preview {
+flex-grow: 1;
+overflow: auto;
+min-height: 400px;
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<!-- Navigation Bar -->
+<header class="bg-white shadow-sm">
+<div class="container mx-auto px-4 py-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-4">
+<a href="#" class="flex items-center">
+<span class="text-2xl font-['Pacifico'] text-primary">logo</span>
+<span class="ml-2 text-lg font-semibold text-gray-800">Portail Documentaire</span>
+</a>
+<nav class="hidden md:flex space-x-6 ml-10">
+<a href="#" class="text-primary font-medium">Accueil</a>
+<div class="relative group">
+<button class="text-gray-600 hover:text-primary transition-colors flex items-center">
+Niveaux
+<div class="w-4 h-4 flex items-center justify-center ml-1">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<div class="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50 py-2 border border-gray-100">
+<a href="https://readdy.ai/home/0c53e70d-cb54-4694-9943-3ea3496cb42d/5e776e93-6cd0-4351-aed9-0b0aca810b1a" data-readdy="true" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Seconde</a>
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Première</a>
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Terminale</a>
+</div>
+</div>
+<a href="#" class="text-gray-600 hover:text-primary transition-colors">Matières</a>
+<a href="#" class="text-gray-600 hover:text-primary transition-colors">Ressources</a>
+<a href="#" class="text-gray-600 hover:text-primary transition-colors">Contact</a>
+</nav>
+</div>
+<div class="flex items-center space-x-4">
+<div class="relative hidden md:block">
+<input type="text" placeholder="Rechercher..." class="w-64 pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+<div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<button class="flex items-center text-sm font-medium text-gray-700 hover:text-primary transition-colors">
+<div class="w-5 h-5 flex items-center justify-center mr-1">
+<i class="ri-notification-3-line"></i>
+</div>
+</button>
+<div class="flex items-center space-x-1">
+<button class="flex items-center space-x-2 px-3 py-2 border border-gray-200 rounded-button hover:bg-gray-50 transition-colors">
+<span class="text-sm font-medium text-gray-700">Se connecter</span>
+</button>
+<button class="flex items-center space-x-2 px-3 py-2 bg-primary text-white rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap">
+<span class="text-sm font-medium">S'inscrire</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Breadcrumb -->
+<div class="bg-white border-b">
+<div class="container mx-auto px-4 py-2">
+<div class="flex items-center text-sm text-gray-500">
+<a href="#" class="hover:text-primary">Accueil</a>
+<div class="w-4 h-4 flex items-center justify-center mx-1">
+<i class="ri-arrow-right-s-line"></i>
+</div>
+<span class="text-gray-700 font-medium">Ressources pédagogiques</span>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<main class="container mx-auto px-4 py-8">
+<!-- Hero Section -->
+<section class="mb-12 bg-white rounded-lg shadow-sm overflow-hidden">
+<div class="relative h-64 md:h-80 bg-gradient-to-r from-blue-50 to-blue-100">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full px-8 md:px-12 lg:px-16 py-8 md:w-1/2">
+<h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">Ressources pédagogiques pour tous les niveaux</h1>
+<p class="text-gray-600 mb-6">Accédez à une bibliothèque complète de documents, cours et exercices pour les lycéens de la seconde à la terminale.</p>
+<div class="flex flex-wrap gap-3">
+<button class="px-5 py-2.5 bg-primary text-white rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap">
+Explorer les ressources
+</button>
+<button class="px-5 py-2.5 border border-gray-200 text-gray-700 rounded-button hover:bg-gray-50 transition-colors whitespace-nowrap">
+En savoir plus
+</button>
+</div>
+</div>
+<div class="hidden md:block md:w-1/2 h-full">
+<img src="https://readdy.ai/api/search-image?query=modern%20education%20concept%20with%20students%20studying%20in%20library%2C%20digital%20learning%20materials%2C%20books%20and%20tablets%2C%20bright%20and%20clean%20educational%20environment%2C%20soft%20lighting&width=600&height=400&seq=1&orientation=landscape" alt="Ressources éducatives" class="w-full h-full object-cover object-top">
+</div>
+</div>
+</div>
+</section>
+<!-- Niveaux Section -->
+<section class="mb-12">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-2xl font-bold text-gray-800">Niveaux scolaires</h2>
+<div class="relative">
+<button id="niveauDropdownButton" class="flex items-center space-x-2 px-4 py-2 border border-gray-200 rounded-button hover:bg-gray-50 transition-colors whitespace-nowrap">
+<span class="text-sm font-medium text-gray-700">Tous les niveaux</span>
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-arrow-down-s-line"></i>
+</div>
+</button>
+<div id="niveauDropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg z-10 py-2 border border-gray-100">
+<a href="https://readdy.ai/home/0c53e70d-cb54-4694-9943-3ea3496cb42d/5e776e93-6cd0-4351-aed9-0b0aca810b1a" data-readdy="true" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Seconde</a>
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Première</a>
+<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Terminale</a>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<a href="#" class="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+<div class="h-40 bg-blue-50 flex items-center justify-center">
+<img src="https://readdy.ai/api/search-image?query=high%20school%20sophomore%20students%20in%20classroom%2C%20learning%20environment%2C%20educational%20setting%2C%20bright%20and%20modern%20classroom&width=400&height=250&seq=2&orientation=landscape" alt="Classe de Seconde" class="w-full h-full object-cover object-top">
+</div>
+<div class="p-6">
+<h3 class="text-xl font-semibold text-gray-800 mb-2">Seconde</h3>
+<p class="text-gray-600 mb-4">Fondamentaux et introduction aux spécialités pour les élèves de 15-16 ans.</p>
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-file-list-3-line"></i>
+</div>
+<span>124 documents disponibles</span>
+</div>
+</div>
+</a>
+<a href="#" class="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+<div class="h-40 bg-green-50 flex items-center justify-center">
+<img src="https://readdy.ai/api/search-image?query=high%20school%20junior%20students%20in%20science%20laboratory%2C%20educational%20environment%2C%20students%20conducting%20experiments%2C%20bright%20modern%20lab&width=400&height=250&seq=3&orientation=landscape" alt="Classe de Première" class="w-full h-full object-cover object-top">
+</div>
+<div class="p-6">
+<h3 class="text-xl font-semibold text-gray-800 mb-2">Première</h3>
+<p class="text-gray-600 mb-4">Approfondissement des connaissances et préparation aux examens.</p>
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-file-list-3-line"></i>
+</div>
+<span>156 documents disponibles</span>
+</div>
+</div>
+</a>
+<a href="#" class="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+<div class="h-40 bg-amber-50 flex items-center justify-center">
+<img src="https://readdy.ai/api/search-image?query=high%20school%20senior%20students%20preparing%20for%20final%20exams%2C%20educational%20setting%2C%20students%20studying%20with%20books%20and%20laptops%2C%20bright%20modern%20classroom&width=400&height=250&seq=4&orientation=landscape" alt="Classe de Terminale" class="w-full h-full object-cover object-top">
+</div>
+<div class="p-6">
+<h3 class="text-xl font-semibold text-gray-800 mb-2">Terminale</h3>
+<p class="text-gray-600 mb-4">Préparation au baccalauréat et orientation post-bac.</p>
+<div class="flex items-center text-sm text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-file-list-3-line"></i>
+</div>
+<span>189 documents disponibles</span>
+</div>
+</div>
+</a>
+</div>
+</section>
+<!-- Filières Section -->
+<section class="mb-12">
+<h2 class="text-2xl font-bold text-gray-800 mb-6">Filières spécialisées</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-white rounded-lg shadow-sm border-t-4 filiere-c p-6">
+<div class="flex items-center mb-4">
+<div class="w-12 h-12 rounded-full filiere-icon flex items-center justify-center mr-4">
+<i class="ri-flask-line text-xl"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-800">Filière C</h3>
+</div>
+<p class="text-gray-600 mb-4">Sciences mathématiques et physiques pour les futurs ingénieurs et scientifiques.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">Mathématiques</span>
+<span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">Physique</span>
+<span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">Chimie</span>
+</div>
+<a href="#" class="inline-flex items-center text-primary font-medium text-sm">
+<span>Explorer les documents</span>
+<div class="w-4 h-4 flex items-center justify-center ml-1">
+<i class="ri-arrow-right-line"></i>
+</div>
+</a>
+</div>
+<div class="bg-white rounded-lg shadow-sm border-t-4 filiere-d p-6">
+<div class="flex items-center mb-4">
+<div class="w-12 h-12 rounded-full filiere-icon flex items-center justify-center mr-4">
+<i class="ri-test-tube-line text-xl"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-800">Filière D</h3>
+</div>
+<p class="text-gray-600 mb-4">Sciences de la vie et de la terre pour les futurs médecins et biologistes.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-2 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium">Biologie</span>
+<span class="px-2 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium">SVT</span>
+<span class="px-2 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium">Chimie</span>
+</div>
+<a href="#" class="inline-flex items-center text-primary font-medium text-sm">
+<span>Explorer les documents</span>
+<div class="w-4 h-4 flex items-center justify-center ml-1">
+<i class="ri-arrow-right-line"></i>
+</div>
+</a>
+</div>
+<div class="bg-white rounded-lg shadow-sm border-t-4 filiere-e p-6">
+<div class="flex items-center mb-4">
+<div class="w-12 h-12 rounded-full filiere-icon flex items-center justify-center mr-4">
+<i class="ri-calculator-line text-xl"></i>
+</div>
+<h3 class="text-xl font-semibold text-gray-800">Filière E</h3>
+</div>
+<p class="text-gray-600 mb-4">Sciences économiques et mathématiques pour les futurs économistes et gestionnaires.</p>
+<div class="flex flex-wrap gap-2 mb-4">
+<span class="px-2 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">Économie</span>
+<span class="px-2 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">Mathématiques</span>
+<span class="px-2 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">Gestion</span>
+</div>
+<a href="#" class="inline-flex items-center text-primary font-medium text-sm">
+<span>Explorer les documents</span>
+<div class="w-4 h-4 flex items-center justify-center ml-1">
+<i class="ri-arrow-right-line"></i>
+</div>
+</a>
+</div>
+</div>
+</section>
+<!-- Documents Section -->
+<section class="mb-12">
+<div class="bg-white rounded-lg shadow-sm p-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
+<h2 class="text-2xl font-bold text-gray-800">Documents récents</h2>
+<div class="flex flex-col md:flex-row gap-4">
+<div class="relative">
+<input type="text" placeholder="Rechercher un document..." class="w-full md:w-64 pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+<div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400">
+<i class="ri-search-line"></i>
+</div>
+</div>
+<div class="flex items-center space-x-2">
+<button id="filterButton" class="flex items-center space-x-2 px-4 py-2 border border-gray-200 rounded-button hover:bg-gray-50 transition-colors whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-filter-3-line"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">Filtres</span>
+</button>
+<button id="sortButton" class="flex items-center space-x-2 px-4 py-2 border border-gray-200 rounded-button hover:bg-gray-50 transition-colors whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-sort-desc"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">Trier</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Filter Panel (hidden by default) -->
+<div id="filterPanel" class="hidden mb-6 p-4 bg-gray-50 rounded-lg border border-gray-100">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Niveau</label>
+<div class="space-y-2">
+<label class="custom-checkbox">
+<input type="checkbox" name="niveau" value="seconde">
+<span class="checkmark mr-2"></span>
+<span class="text-sm">Seconde</span>
+</label>
+<label class="custom-checkbox">
+<input type="checkbox" name="niveau" value="premiere">
+<span class="checkmark mr-2"></span>
+<span class="text-sm">Première</span>
+</label>
+<label class="custom-checkbox">
+<input type="checkbox" name="niveau" value="terminale">
+<span class="checkmark mr-2"></span>
+<span class="text-sm">Terminale</span>
+</label>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Filière</label>
+<div class="space-y-2">
+<label class="custom-checkbox">
+<input type="checkbox" name="filiere" value="c">
+<span class="checkmark mr-2"></span>
+<span class="text-sm">Filière C</span>
+</label>
+<label class="custom-checkbox">
+<input type="checkbox" name="filiere" value="d">
+<span class="checkmark mr-2"></span>
+<span class="text-sm">Filière D</span>
+</label>
+<label class="custom-checkbox">
+<input type="checkbox" name="filiere" value="e">
+<span class="checkmark mr-2"></span>
+<span class="text-sm">Filière E</span>
+</label>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-1">Type de document</label>
+<div class="space-y-2">
+<label class="custom-checkbox">
+<input type="checkbox" name="type" value="cours">
+<span class="checkmark mr-2"></span>
+<span class="text-sm">Cours</span>
+</label>
+<label class="custom-checkbox">
+<input type="checkbox" name="type" value="exercices">
+<span class="checkmark mr-2"></span>
+<span class="text-sm">Exercices</span>
+</label>
+<label class="custom-checkbox">
+<input type="checkbox" name="type" value="examens">
+<span class="checkmark mr-2"></span>
+<span class="text-sm">Examens</span>
+</label>
+</div>
+</div>
+</div>
+<div class="flex justify-end mt-4 space-x-2">
+<button class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">Réinitialiser</button>
+<button class="px-4 py-2 bg-primary text-white text-sm rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap">Appliquer</button>
+</div>
+</div>
+<!-- Documents List -->
+<div class="overflow-x-auto">
+<table class="w-full">
+<thead>
+<tr class="border-b border-gray-100">
+<th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Document</th>
+<th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Niveau</th>
+<th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Filière</th>
+<th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+<th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+<th class="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Taille</th>
+<th class="py-3 px-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100">
+<tr class="hover:bg-gray-50">
+<td class="py-3 px-4">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-red-50 text-red-500 rounded mr-3">
+<i class="ri-file-pdf-line"></i>
+</div>
+<div>
+<div class="font-medium text-gray-800">Cours de Mathématiques - Fonctions</div>
+<div class="text-xs text-gray-500">Professeur: Martin Dupont</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 text-sm text-gray-600">Terminale</td>
+<td class="py-3 px-4">
+<span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">Filière C</span>
+</td>
+<td class="py-3 px-4">
+<span class="px-2 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-medium">Cours</span>
+</td>
+<td class="py-3 px-4 text-sm text-gray-600">21/06/2025</td>
+<td class="py-3 px-4 text-sm text-gray-600">2.4 MB</td>
+<td class="py-3 px-4 text-right">
+<div class="flex justify-end space-x-2">
+<button class="preview-button w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full" data-document="Cours de Mathématiques - Fonctions">
+<i class="ri-eye-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="py-3 px-4">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-blue-50 text-blue-500 rounded mr-3">
+<i class="ri-file-word-line"></i>
+</div>
+<div>
+<div class="font-medium text-gray-800">Exercices de Physique - Mécanique</div>
+<div class="text-xs text-gray-500">Professeur: Sophie Laurent</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 text-sm text-gray-600">Première</td>
+<td class="py-3 px-4">
+<span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">Filière C</span>
+</td>
+<td class="py-3 px-4">
+<span class="px-2 py-1 bg-indigo-50 text-indigo-700 rounded-full text-xs font-medium">Exercices</span>
+</td>
+<td class="py-3 px-4 text-sm text-gray-600">20/06/2025</td>
+<td class="py-3 px-4 text-sm text-gray-600">1.8 MB</td>
+<td class="py-3 px-4 text-right">
+<div class="flex justify-end space-x-2">
+<button class="preview-button w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full" data-document="Exercices de Physique - Mécanique">
+<i class="ri-eye-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="py-3 px-4">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-green-50 text-green-500 rounded mr-3">
+<i class="ri-file-excel-line"></i>
+</div>
+<div>
+<div class="font-medium text-gray-800">TP de Biologie - Cellules</div>
+<div class="text-xs text-gray-500">Professeur: Claire Moreau</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 text-sm text-gray-600">Terminale</td>
+<td class="py-3 px-4">
+<span class="px-2 py-1 bg-green-50 text-green-700 rounded-full text-xs font-medium">Filière D</span>
+</td>
+<td class="py-3 px-4">
+<span class="px-2 py-1 bg-teal-50 text-teal-700 rounded-full text-xs font-medium">TP</span>
+</td>
+<td class="py-3 px-4 text-sm text-gray-600">19/06/2025</td>
+<td class="py-3 px-4 text-sm text-gray-600">3.2 MB</td>
+<td class="py-3 px-4 text-right">
+<div class="flex justify-end space-x-2">
+<button class="preview-button w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full" data-document="TP de Biologie - Cellules">
+<i class="ri-eye-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="py-3 px-4">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-orange-50 text-orange-500 rounded mr-3">
+<i class="ri-file-ppt-line"></i>
+</div>
+<div>
+<div class="font-medium text-gray-800">Cours d'Économie - Marchés financiers</div>
+<div class="text-xs text-gray-500">Professeur: Thomas Bernard</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 text-sm text-gray-600">Terminale</td>
+<td class="py-3 px-4">
+<span class="px-2 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium">Filière E</span>
+</td>
+<td class="py-3 px-4">
+<span class="px-2 py-1 bg-purple-50 text-purple-700 rounded-full text-xs font-medium">Cours</span>
+</td>
+<td class="py-3 px-4 text-sm text-gray-600">18/06/2025</td>
+<td class="py-3 px-4 text-sm text-gray-600">4.7 MB</td>
+<td class="py-3 px-4 text-right">
+<div class="flex justify-end space-x-2">
+<button class="preview-button w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full" data-document="Cours d'Économie - Marchés financiers">
+<i class="ri-eye-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-gray-50">
+<td class="py-3 px-4">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-red-50 text-red-500 rounded mr-3">
+<i class="ri-file-pdf-line"></i>
+</div>
+<div>
+<div class="font-medium text-gray-800">Annales Bac - Mathématiques</div>
+<div class="text-xs text-gray-500">Académie de Paris</div>
+</div>
+</div>
+</td>
+<td class="py-3 px-4 text-sm text-gray-600">Terminale</td>
+<td class="py-3 px-4">
+<span class="px-2 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-medium">Filière C</span>
+</td>
+<td class="py-3 px-4">
+<span class="px-2 py-1 bg-rose-50 text-rose-700 rounded-full text-xs font-medium">Examen</span>
+</td>
+<td class="py-3 px-4 text-sm text-gray-600">17/06/2025</td>
+<td class="py-3 px-4 text-sm text-gray-600">5.1 MB</td>
+<td class="py-3 px-4 text-right">
+<div class="flex justify-end space-x-2">
+<button class="preview-button w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full" data-document="Annales Bac - Mathématiques">
+<i class="ri-eye-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-100 rounded-full">
+<i class="ri-download-line"></i>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex justify-between items-center mt-6">
+<div class="text-sm text-gray-600">Affichage de 1 à 5 sur 42 documents</div>
+<div class="flex space-x-1">
+<button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-gray-400">
+<i class="ri-arrow-left-s-line"></i>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded bg-primary text-white">1</button>
+<button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-gray-700 hover:bg-gray-50">2</button>
+<button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-gray-700 hover:bg-gray-50">3</button>
+<button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-gray-700 hover:bg-gray-50">4</button>
+<button class="w-8 h-8 flex items-center justify-center border border-gray-200 rounded text-gray-700 hover:bg-gray-50">
+<i class="ri-arrow-right-s-line"></i>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Matières Section -->
+<section class="mb-12">
+<h2 class="text-2xl font-bold text-gray-800 mb-6">Matières populaires</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<a href="#" class="matiere-card bg-white rounded-lg shadow-sm p-6 transition-transform duration-200">
+<div class="w-12 h-12 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center mb-4">
+<i class="ri-calculator-line text-xl"></i>
+</div>
+<h3 class="text-lg font-semibold text-gray-800 mb-2">Mathématiques</h3>
+<p class="text-gray-600 text-sm mb-3">Algèbre, géométrie, analyse et probabilités.</p>
+<div class="flex items-center text-xs text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-file-list-3-line"></i>
+</div>
+<span>48 documents</span>
+</div>
+</a>
+<a href="#" class="matiere-card bg-white rounded-lg shadow-sm p-6 transition-transform duration-200">
+<div class="w-12 h-12 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center mb-4">
+<i class="ri-flask-line text-xl"></i>
+</div>
+<h3 class="text-lg font-semibold text-gray-800 mb-2">Physique</h3>
+<p class="text-gray-600 text-sm mb-3">Mécanique, électricité, optique et thermodynamique.</p>
+<div class="flex items-center text-xs text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-file-list-3-line"></i>
+</div>
+<span>36 documents</span>
+</div>
+</a>
+<a href="#" class="matiere-card bg-white rounded-lg shadow-sm p-6 transition-transform duration-200">
+<div class="w-12 h-12 rounded-lg bg-green-50 text-green-500 flex items-center justify-center mb-4">
+<i class="ri-test-tube-line text-xl"></i>
+</div>
+<h3 class="text-lg font-semibold text-gray-800 mb-2">SVT</h3>
+<p class="text-gray-600 text-sm mb-3">Biologie, géologie et écologie.</p>
+<div class="flex items-center text-xs text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-file-list-3-line"></i>
+</div>
+<span>29 documents</span>
+</div>
+</a>
+<a href="#" class="matiere-card bg-white rounded-lg shadow-sm p-6 transition-transform duration-200">
+<div class="w-12 h-12 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center mb-4">
+<i class="ri-book-open-line text-xl"></i>
+</div>
+<h3 class="text-lg font-semibold text-gray-800 mb-2">Français</h3>
+<p class="text-gray-600 text-sm mb-3">Littérature, grammaire et méthodologie.</p>
+<div class="flex items-center text-xs text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-file-list-3-line"></i>
+</div>
+<span>32 documents</span>
+</div>
+</a>
+<a href="#" class="matiere-card bg-white rounded-lg shadow-sm p-6 transition-transform duration-200">
+<div class="w-12 h-12 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center mb-4">
+<i class="ri-test-tube-line text-xl"></i>
+</div>
+<h3 class="text-lg font-semibold text-gray-800 mb-2">Chimie</h3>
+<p class="text-gray-600 text-sm mb-3">Chimie organique, inorganique et réactions.</p>
+<div class="flex items-center text-xs text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-file-list-3-line"></i>
+</div>
+<span>27 documents</span>
+</div>
+</a>
+<a href="#" class="matiere-card bg-white rounded-lg shadow-sm p-6 transition-transform duration-200">
+<div class="w-12 h-12 rounded-lg bg-purple-50 text-purple-500 flex items-center justify-center mb-4">
+<i class="ri-earth-line text-xl"></i>
+</div>
+<h3 class="text-lg font-semibold text-gray-800 mb-2">Histoire-Géo</h3>
+<p class="text-gray-600 text-sm mb-3">Histoire contemporaine et géographie humaine.</p>
+<div class="flex items-center text-xs text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-file-list-3-line"></i>
+</div>
+<span>31 documents</span>
+</div>
+</a>
+<a href="#" class="matiere-card bg-white rounded-lg shadow-sm p-6 transition-transform duration-200">
+<div class="w-12 h-12 rounded-lg bg-cyan-50 text-cyan-500 flex items-center justify-center mb-4">
+<i class="ri-translate-2 text-xl"></i>
+</div>
+<h3 class="text-lg font-semibold text-gray-800 mb-2">Anglais</h3>
+<p class="text-gray-600 text-sm mb-3">Grammaire, vocabulaire et méthodologie.</p>
+<div class="flex items-center text-xs text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-file-list-3-line"></i>
+</div>
+<span>24 documents</span>
+</div>
+</a>
+<a href="#" class="matiere-card bg-white rounded-lg shadow-sm p-6 transition-transform duration-200">
+<div class="w-12 h-12 rounded-lg bg-orange-50 text-orange-500 flex items-center justify-center mb-4">
+<i class="ri-bank-line text-xl"></i>
+</div>
+<h3 class="text-lg font-semibold text-gray-800 mb-2">Économie</h3>
+<p class="text-gray-600 text-sm mb-3">Microéconomie, macroéconomie et marchés.</p>
+<div class="flex items-center text-xs text-gray-500">
+<div class="w-4 h-4 flex items-center justify-center mr-1">
+<i class="ri-file-list-3-line"></i>
+</div>
+<span>22 documents</span>
+</div>
+</a>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="mb-12">
+<div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-lg shadow-sm overflow-hidden">
+<div class="px-6 py-12 md:px-12 text-center">
+<h2 class="text-3xl font-bold text-white mb-4">Vous êtes enseignant ?</h2>
+<p class="text-blue-100 mb-8 max-w-2xl mx-auto">Rejoignez notre communauté et partagez vos ressources pédagogiques avec des milliers d'élèves. Contribuez à l'éducation de demain.</p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<button class="px-6 py-3 bg-white text-primary font-medium rounded-button hover:bg-gray-100 transition-colors whitespace-nowrap">
+Devenir contributeur
+</button>
+<button class="px-6 py-3 bg-transparent border border-white text-white font-medium rounded-button hover:bg-white/10 transition-colors whitespace-nowrap">
+En savoir plus
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-gray-800 text-gray-300">
+<div class="container mx-auto px-4 py-12">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+<div>
+<div class="flex items-center mb-4">
+<span class="text-2xl font-['Pacifico'] text-white">logo</span>
+<span class="ml-2 text-lg font-semibold text-white">Portail Documentaire</span>
+</div>
+<p class="text-gray-400 mb-4">Plateforme éducative pour les lycéens, offrant des ressources pédagogiques de qualité pour tous les niveaux et filières.</p>
+<div class="flex space-x-4">
+<a href="#" class="w-8 h-8 flex items-center justify-center bg-gray-700 hover:bg-gray-600 rounded-full transition-colors">
+<i class="ri-facebook-fill text-white"></i>
+</a>
+<a href="#" class="w-8 h-8 flex items-center justify-center bg-gray-700 hover:bg-gray-600 rounded-full transition-colors">
+<i class="ri-twitter-x-fill text-white"></i>
+</a>
+<a href="#" class="w-8 h-8 flex items-center justify-center bg-gray-700 hover:bg-gray-600 rounded-full transition-colors">
+<i class="ri-instagram-fill text-white"></i>
+</a>
+<a href="#" class="w-8 h-8 flex items-center justify-center bg-gray-700 hover:bg-gray-600 rounded-full transition-colors">
+<i class="ri-youtube-fill text-white"></i>
+</a>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-semibold text-white mb-4">Liens rapides</h3>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Accueil</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Niveaux</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Filières</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Matières</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Documents récents</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-lg font-semibold text-white mb-4">Support</h3>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Aide</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Conditions d'utilisation</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Politique de confidentialité</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Signaler un problème</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-lg font-semibold text-white mb-4">Contactez-nous</h3>
+<ul class="space-y-3">
+<li class="flex items-start">
+<div class="w-5 h-5 flex items-center justify-center text-gray-400 mr-2 mt-0.5">
+<i class="ri-map-pin-line"></i>
+</div>
+<span class="text-gray-400">Centre ville Lumumba, Pointe Noire, France</span>
+</li>
+<li class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center text-gray-400 mr-2">
+<i class="ri-phone-line"></i>
+</div>
+<span class="text-gray-400">+242 05 002 75 99</span>
+</li>
+<li class="flex items-center">
+<div class="w-5 h-5 flex items-center justify-center text-gray-400 mr-2">
+<i class="ri-mail-line"></i>
+</div>
+<span class="text-gray-400">kimboother@yahoo.fr</span>
+</li>
+</ul>
+<div class="mt-6">
+<h4 class="text-white font-medium mb-2">Abonnez-vous à notre newsletter</h4>
+<div class="flex">
+<input type="email" placeholder="Votre email" class="flex-1 px-4 py-2 text-sm bg-gray-700 border border-gray-600 rounded-l-button focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
+<button class="px-4 py-2 bg-primary text-white rounded-r-button hover:bg-primary/90 transition-colors whitespace-nowrap">
+S'abonner
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-700 mt-10 pt-6 flex flex-col md:flex-row justify-between items-center">
+<p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 Portail Documentaire. Tous droits réservés.</p>
+<div class="flex space-x-4">
+<div class="w-8 h-5 flex items-center justify-center">
+<i class="ri-visa-fill text-xl text-gray-300"></i>
+</div>
+<div class="w-8 h-5 flex items-center justify-center">
+<i class="ri-mastercard-fill text-xl text-gray-300"></i>
+</div>
+<div class="w-8 h-5 flex items-center justify-center">
+<i class="ri-paypal-fill text-xl text-gray-300"></i>
+</div>
+<div class="w-8 h-5 flex items-center justify-center">
+<i class="ri-apple-fill text-xl text-gray-300"></i>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<!-- Document Preview Modal -->
+<div id="previewModal" class="modal">
+<div class="modal-content">
+<div class="flex items-center justify-between p-4 border-b border-gray-100">
+<h3 class="text-lg font-semibold text-gray-800" id="previewTitle">Aperçu du document</h3>
+<button id="closeModal" class="w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">
+<i class="ri-close-line"></i>
+</button>
+</div>
+<div class="document-preview p-4 bg-gray-50 flex items-center justify-center">
+<div class="text-center">
+<div class="w-16 h-16 mx-auto flex items-center justify-center bg-red-50 text-red-500 rounded-full mb-4">
+<i class="ri-file-pdf-line text-3xl"></i>
+</div>
+<h4 class="text-lg font-medium text-gray-800 mb-2" id="documentName"></h4>
+<p class="text-gray-600 mb-6">Prévisualisation du document en cours de chargement...</p>
+<div class="flex justify-center space-x-4">
+<button class="flex items-center space-x-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-button hover:bg-gray-300 transition-colors whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-zoom-in-line"></i>
+</div>
+<span>Zoom +</span>
+</button>
+<button class="flex items-center space-x-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-button hover:bg-gray-300 transition-colors whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-zoom-out-line"></i>
+</div>
+<span>Zoom -</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 border-t border-gray-100">
+<div class="text-sm text-gray-600">
+<span>Format: PDF</span>
+<span class="mx-2">•</span>
+<span>Taille: 2.4 MB</span>
+</div>
+<button class="flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap">
+<div class="w-4 h-4 flex items-center justify-center">
+<i class="ri-download-line"></i>
+</div>
+<span>Télécharger</span>
+</button>
+</div>
+</div>
+</div>
+<script id="dropdownScript">
+document.addEventListener('DOMContentLoaded', function() {
+const niveauDropdownButton = document.getElementById('niveauDropdownButton');
+const niveauDropdown = document.getElementById('niveauDropdown');
+if (niveauDropdownButton && niveauDropdown) {
+niveauDropdownButton.addEventListener('click', function() {
+niveauDropdown.classList.toggle('hidden');
+});
+document.addEventListener('click', function(event) {
+if (!niveauDropdownButton.contains(event.target) && !niveauDropdown.contains(event.target)) {
+niveauDropdown.classList.add('hidden');
+}
+});
+}
+});
+</script>
+<script id="filterScript">
+document.addEventListener('DOMContentLoaded', function() {
+const filterButton = document.getElementById('filterButton');
+const filterPanel = document.getElementById('filterPanel');
+if (filterButton && filterPanel) {
+filterButton.addEventListener('click', function() {
+filterPanel.classList.toggle('hidden');
+});
+}
+});
+</script>
+<script id="modalScript">
+document.addEventListener('DOMContentLoaded', function() {
+const previewButtons = document.querySelectorAll('.preview-button');
+const previewModal = document.getElementById('previewModal');
+const closeModal = document.getElementById('closeModal');
+const documentName = document.getElementById('documentName');
+if (previewButtons.length && previewModal && closeModal && documentName) {
+previewButtons.forEach(button => {
+button.addEventListener('click', function() {
+const docName = this.getAttribute('data-document');
+documentName.textContent = docName;
+previewModal.style.display = 'block';
+});
+});
+closeModal.addEventListener('click', function() {
+previewModal.style.display = 'none';
+});
+window.addEventListener('click', function(event) {
+if (event.target === previewModal) {
+previewModal.style.display = 'none';
+}
+});
+}
+});
+</script>
+<script id="checkboxScript">
+document.addEventListener('DOMContentLoaded', function() {
+const checkboxes = document.querySelectorAll('.custom-checkbox input[type="checkbox"]');
+checkboxes.forEach(checkbox => {
+checkbox.addEventListener('change', function() {
+const checkmark = this.nextElementSibling;
+if (this.checked) {
+checkmark.classList.add('bg-primary', 'border-primary');
+} else {
+checkmark.classList.remove('bg-primary', 'border-primary');
+}
+});
+});
+});
+</script>
+</body>
+</html>
