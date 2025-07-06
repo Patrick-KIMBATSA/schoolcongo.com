@@ -152,40 +152,70 @@ Niveaux
 </div>
 </button>
 <div class="flex items-center space-x-1">
-<button class="flex items-center space-x-2 px-3 py-2 border border-gray-200 rounded-button hover:bg-gray-50 transition-colors">
+<button id="loginButton" class="flex items-center space-x-2 px-3 py-2 border border-gray-200 rounded-button hover:bg-gray-50 transition-colors">
 <span class="text-sm font-medium text-gray-700">Se connecter</span>
 </button>
-<button class="flex items-center space-x-2 px-3 py-2 bg-primary text-white rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap">
-<!-- Span qui déclenche l'affichage du formulaire -->
-<span onclick="toggleForm()" class="text-sm font-medium text-blue-600 cursor-pointer hover:underline">
-  S'inscrire
-</span>
-<!-- Formulaire caché par défaut -->
-<div id="registrationForm" style="display: none;" class="max-w-md mx-auto mt-8 bg-white p-6 rounded shadow">
-  <h2 class="text-xl font-bold mb-4">Créer un compte</h2>
-  
-  <form name="inscription" method="POST" data-netlify="true">
-    <div class="mb-4">
-      <label for="email" class="block text-sm font-medium">Email</label>
-      <input type="email" id="email" name="email" required class="w-full border border-gray-300 rounded px-3 py-2">
-    </div>
-    <div class="mb-4">
-      <label for="password" class="block text-sm font-medium">Mot de passe</label>
-      <input type="password" id="password" name="password" required class="w-full border border-gray-300 rounded px-3 py-2">
-    </div>
-    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-      S'inscrire
-    </button>
-  </form>
-</div>
-<!-- Script pour afficher/masquer le formulaire -->
-<script>
-  function toggleForm() {
-    var form = document.getElementById("registrationForm");
-    form.style.display = (form.style.display === "none") ? "block" : "none";
-  }
-</script>
+<button id="registerButton" class="flex items-center space-x-2 px-3 py-2 bg-primary text-white rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap">
+<span class="text-sm font-medium">S'inscrire</span>
 </button>
+</div>
+
+<!-- Login Modal -->
+<div id="loginModal" class="modal">
+  <div class="modal-content max-w-md w-full">
+    <div class="flex items-center justify-between p-4 border-b border-gray-100">
+      <h3 class="text-lg font-semibold text-gray-800">Connexion</h3>
+      <button class="close-modal w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+    <form id="loginForm" class="p-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input type="email" name="email" required class="w-full px-4 py-2 border border-gray-200 rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="Votre email">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
+          <input type="password" name="password" required class="w-full px-4 py-2 border border-gray-200 rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="Votre mot de passe">
+        </div>
+        <button type="submit" class="w-full py-2 bg-primary text-white rounded-button hover:bg-primary/90 transition-colors">Se connecter</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Register Modal -->
+<div id="registerModal" class="modal">
+  <div class="modal-content max-w-md w-full">
+    <div class="flex items-center justify-between p-4 border-b border-gray-100">
+      <h3 class="text-lg font-semibold text-gray-800">Inscription</h3>
+      <button class="close-modal w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+    <form id="registerForm" class="p-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+          <input type="text" name="lastname" required class="w-full px-4 py-2 border border-gray-200 rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="Votre nom">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
+          <input type="text" name="firstname" required class="w-full px-4 py-2 border border-gray-200 rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="Votre prénom">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input type="email" name="email" required class="w-full px-4 py-2 border border-gray-200 rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="Votre email">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Mot de passe</label>
+          <input type="password" name="password" required class="w-full px-4 py-2 border border-gray-200 rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="Votre mot de passe">
+        </div>
+        <button type="submit" class="w-full py-2 bg-primary text-white rounded-button hover:bg-primary/90 transition-colors">S'inscrire</button>
+      </div>
+    </form>
+  </div>
 </div>
 </div>
 </div>
@@ -770,9 +800,55 @@ En savoir plus
 <h2 class="text-3xl font-bold text-white mb-4">Vous êtes enseignant ?</h2>
 <p class="text-blue-100 mb-8 max-w-2xl mx-auto">Rejoignez notre communauté et partagez vos ressources pédagogiques avec des milliers d'élèves. Contribuez à l'éducation de demain.</p>
 <div class="flex flex-col sm:flex-row justify-center gap-4">
-<button class="px-6 py-3 bg-white text-primary font-medium rounded-button hover:bg-gray-100 transition-colors whitespace-nowrap">
+<button id="contributorButton" class="px-6 py-3 bg-white text-primary font-medium rounded-button hover:bg-gray-100 transition-colors whitespace-nowrap">
 Devenir contributeur
 </button>
+
+<!-- Contributor Modal -->
+<div id="contributorModal" class="modal">
+  <div class="modal-content max-w-md w-full">
+    <div class="flex items-center justify-between p-4 border-b border-gray-100">
+      <h3 class="text-lg font-semibold text-gray-800">Devenir contributeur</h3>
+      <button class="close-modal w-8 h-8 flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-full">
+        <i class="ri-close-line"></i>
+      </button>
+    </div>
+    <form id="contributorForm" class="p-6">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Nom</label>
+          <input type="text" name="lastname" required class="w-full px-4 py-2 border border-gray-200 rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="Votre nom">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Prénom</label>
+          <input type="text" name="firstname" required class="w-full px-4 py-2 border border-gray-200 rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="Votre prénom">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+          <input type="email" name="email" required class="w-full px-4 py-2 border border-gray-200 rounded-button focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" placeholder="Votre email">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Document</label>
+          <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-button">
+            <div class="space-y-1 text-center">
+              <div class="w-12 h-12 mx-auto text-gray-400">
+                <i class="ri-upload-cloud-2-line text-3xl"></i>
+              </div>
+              <div class="flex text-sm text-gray-600">
+                <label for="file-upload" class="relative cursor-pointer bg-white rounded-button font-medium text-primary hover:text-primary/90 focus-within:outline-none">
+                  <span>Téléverser un fichier</span>
+                  <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                </label>
+              </div>
+              <p class="text-xs text-gray-500">PDF, DOC jusqu'à 10MB</p>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="w-full py-2 bg-primary text-white rounded-button hover:bg-primary/90 transition-colors">Soumettre</button>
+      </div>
+    </form>
+  </div>
+</div>
 <button class="px-6 py-3 bg-transparent border border-white text-white font-medium rounded-button hover:bg-white/10 transition-colors whitespace-nowrap">
 En savoir plus
 </button>
@@ -833,19 +909,19 @@ En savoir plus
 <div class="w-5 h-5 flex items-center justify-center text-gray-400 mr-2 mt-0.5">
 <i class="ri-map-pin-line"></i>
 </div>
-<span class="text-gray-400">Centre ville Lumumba, Pointe Noire, France</span>
+<span class="text-gray-400">123 Avenue de l'Éducation, 75001 Paris, France</span>
 </li>
 <li class="flex items-center">
 <div class="w-5 h-5 flex items-center justify-center text-gray-400 mr-2">
 <i class="ri-phone-line"></i>
 </div>
-<span class="text-gray-400">+242 05 002 75 99</span>
+<span class="text-gray-400">+33 1 23 45 67 89</span>
 </li>
 <li class="flex items-center">
 <div class="w-5 h-5 flex items-center justify-center text-gray-400 mr-2">
 <i class="ri-mail-line"></i>
 </div>
-<span class="text-gray-400">kimboother@yahoo.fr</span>
+<span class="text-gray-400">contact@portail-documentaire.fr</span>
 </li>
 </ul>
 <div class="mt-6">
@@ -954,27 +1030,114 @@ filterPanel.classList.toggle('hidden');
 </script>
 <script id="modalScript">
 document.addEventListener('DOMContentLoaded', function() {
-const previewButtons = document.querySelectorAll('.preview-button');
-const previewModal = document.getElementById('previewModal');
-const closeModal = document.getElementById('closeModal');
-const documentName = document.getElementById('documentName');
-if (previewButtons.length && previewModal && closeModal && documentName) {
-previewButtons.forEach(button => {
-button.addEventListener('click', function() {
-const docName = this.getAttribute('data-document');
-documentName.textContent = docName;
-previewModal.style.display = 'block';
-});
-});
-closeModal.addEventListener('click', function() {
-previewModal.style.display = 'none';
-});
-window.addEventListener('click', function(event) {
-if (event.target === previewModal) {
-previewModal.style.display = 'none';
-}
-});
-}
+  // Preview Modal
+  const previewButtons = document.querySelectorAll('.preview-button');
+  const previewModal = document.getElementById('previewModal');
+  const closeModal = document.getElementById('closeModal');
+  const documentName = document.getElementById('documentName');
+
+  if (previewButtons.length && previewModal && closeModal && documentName) {
+    previewButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const docName = this.getAttribute('data-document');
+        documentName.textContent = docName;
+        previewModal.style.display = 'block';
+      });
+    });
+
+    closeModal.addEventListener('click', function() {
+      previewModal.style.display = 'none';
+    });
+  }
+
+  // Login Modal
+  const loginButton = document.getElementById('loginButton');
+  const loginModal = document.getElementById('loginModal');
+  const loginForm = document.getElementById('loginForm');
+
+  if (loginButton && loginModal && loginForm) {
+    loginButton.addEventListener('click', function() {
+      loginModal.style.display = 'block';
+    });
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Handle login form submission
+      const formData = new FormData(loginForm);
+      console.log('Login form submitted:', Object.fromEntries(formData));
+      loginModal.style.display = 'none';
+    });
+  }
+
+  // Register Modal
+  const registerButton = document.getElementById('registerButton');
+  const registerModal = document.getElementById('registerModal');
+  const registerForm = document.getElementById('registerForm');
+
+  if (registerButton && registerModal && registerForm) {
+    registerButton.addEventListener('click', function() {
+      registerModal.style.display = 'block';
+    });
+
+    registerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Handle register form submission
+      const formData = new FormData(registerForm);
+      console.log('Register form submitted:', Object.fromEntries(formData));
+      registerModal.style.display = 'none';
+    });
+  }
+
+  // Contributor Modal
+  const contributorButton = document.getElementById('contributorButton');
+  const contributorModal = document.getElementById('contributorModal');
+  const contributorForm = document.getElementById('contributorForm');
+
+  if (contributorButton && contributorModal && contributorForm) {
+    contributorButton.addEventListener('click', function() {
+      contributorModal.style.display = 'block';
+    });
+
+    contributorForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      // Handle contributor form submission
+      const formData = new FormData(contributorForm);
+      console.log('Contributor form submitted:', Object.fromEntries(formData));
+      contributorModal.style.display = 'none';
+    });
+  }
+
+  // Close all modals when clicking outside
+  window.addEventListener('click', function(event) {
+    const modals = [previewModal, loginModal, registerModal, contributorModal];
+    modals.forEach(modal => {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  });
+
+  // Close buttons for all modals
+  document.querySelectorAll('.close-modal').forEach(button => {
+    button.addEventListener('click', function() {
+      this.closest('.modal').style.display = 'none';
+    });
+  });
+
+  // Search functionality
+  const searchInput = document.querySelector('input[placeholder="Rechercher..."]');
+  if (searchInput) {
+    searchInput.addEventListener('input', function(e) {
+      const searchTerm = e.target.value.toLowerCase();
+      // Filter documents based on search term
+      const documents = document.querySelectorAll('tbody tr');
+      documents.forEach(doc => {
+        const title = doc.querySelector('.font-medium').textContent.toLowerCase();
+        const shouldShow = title.includes(searchTerm);
+        doc.style.display = shouldShow ? '' : 'none';
+      });
+    });
+  }
 });
 </script>
 <script id="checkboxScript">
