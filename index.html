@@ -156,7 +156,40 @@ Niveaux
 <span class="text-sm font-medium text-gray-700">Se connecter</span>
 </button>
 <button class="flex items-center space-x-2 px-3 py-2 bg-primary text-white rounded-button hover:bg-primary/90 transition-colors whitespace-nowrap">
-<span class="text-sm font-medium">S'inscrire</span>
+<!-- Span qui déclenche l'affichage du formulaire -->
+<span onclick="toggleForm()" class="text-sm font-medium text-blue-600 cursor-pointer hover:underline">
+  S'inscrire
+</span>
+
+<!-- Formulaire caché par défaut -->
+<div id="registrationForm" style="display: none;" class="max-w-md mx-auto mt-8 bg-white p-6 rounded shadow">
+  <h2 class="text-xl font-bold mb-4">Créer un compte</h2>
+  
+  <form name="inscription" method="POST" data-netlify="true">
+    <div class="mb-4">
+      <label for="email" class="block text-sm font-medium">Email</label>
+      <input type="email" id="email" name="email" required class="w-full border border-gray-300 rounded px-3 py-2">
+    </div>
+
+    <div class="mb-4">
+      <label for="password" class="block text-sm font-medium">Mot de passe</label>
+      <input type="password" id="password" name="password" required class="w-full border border-gray-300 rounded px-3 py-2">
+    </div>
+
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+      S'inscrire
+    </button>
+  </form>
+</div>
+
+<!-- Script pour afficher/masquer le formulaire -->
+<script>
+  function toggleForm() {
+    var form = document.getElementById("registrationForm");
+    form.style.display = (form.style.display === "none") ? "block" : "none";
+  }
+</script>
+ 
 </button>
 </div>
 </div>
