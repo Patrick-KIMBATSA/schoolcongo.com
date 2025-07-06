@@ -160,7 +160,6 @@ Niveaux
 <span onclick="toggleForm()" class="text-sm font-medium text-blue-600 cursor-pointer hover:underline">
   S'inscrire
 </span>
-
 <!-- Formulaire caché par défaut -->
 <div id="registrationForm" style="display: none;" class="max-w-md mx-auto mt-8 bg-white p-6 rounded shadow">
   <h2 class="text-xl font-bold mb-4">Créer un compte</h2>
@@ -170,18 +169,15 @@ Niveaux
       <label for="email" class="block text-sm font-medium">Email</label>
       <input type="email" id="email" name="email" required class="w-full border border-gray-300 rounded px-3 py-2">
     </div>
-
     <div class="mb-4">
       <label for="password" class="block text-sm font-medium">Mot de passe</label>
       <input type="password" id="password" name="password" required class="w-full border border-gray-300 rounded px-3 py-2">
     </div>
-
     <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
       S'inscrire
     </button>
   </form>
 </div>
-
 <!-- Script pour afficher/masquer le formulaire -->
 <script>
   function toggleForm() {
@@ -189,7 +185,6 @@ Niveaux
     form.style.display = (form.style.display === "none") ? "block" : "none";
   }
 </script>
- 
 </button>
 </div>
 </div>
